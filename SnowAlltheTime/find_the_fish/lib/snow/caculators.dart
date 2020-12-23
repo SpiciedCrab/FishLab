@@ -35,7 +35,13 @@ class SnowBasicInfo {
   Offset meltedStart;
   Offset meltedEnd;
 
+  Rect touchRect;
+  double touchRadius;
+  double startAngle;
+  double swipeAngle;
+
   bool invalid = false;
+  bool touchBarrier = false;
   bool melted = false;
   bool isUp = false;
   int upTimes = 0;

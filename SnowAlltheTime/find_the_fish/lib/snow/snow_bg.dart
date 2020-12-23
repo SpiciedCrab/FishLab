@@ -55,10 +55,10 @@ class _SnowBgState extends State<SnowBg>  {
     super.didChangeDependencies();
   }
 
-  var snow = List.generate(20, (index) => SnowBasicInfo(x: Random().nextInt(400).toDouble() , y: - Random().nextInt(50).toDouble(), r: SnowInfoUtils.snowRadius));
+  var snow = List.generate(10, (index) => SnowBasicInfo(x: Random().nextInt(400).toDouble() , y: - Random().nextInt(50).toDouble(), r: SnowInfoUtils.snowRadius));
 
   List<SnowBasicInfo> moreSnow() {
-    return List.generate(Random().nextInt(10), (index) => SnowBasicInfo(x: Random().nextInt(400).toDouble() , y: - Random().nextInt(100).toDouble(), r: SnowInfoUtils.snowRadius));
+    return List.generate(Random().nextInt(5), (index) => SnowBasicInfo(x: Random().nextInt(400).toDouble() , y: - Random().nextInt(100).toDouble(), r: SnowInfoUtils.snowRadius));
   }
 
   @override
