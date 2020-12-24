@@ -39,6 +39,7 @@ class SnowBasicInfo {
   double touchRadius;
   double startAngle;
   double swipeAngle;
+  double stroke;
 
   bool invalid = false;
   bool touchBarrier = false;

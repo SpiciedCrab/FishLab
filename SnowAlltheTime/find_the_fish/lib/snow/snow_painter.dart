@@ -24,19 +24,22 @@ class SnowPainter extends CustomPainter {
     ..color = Colors.red;
 
   Paint snowBarrierPainter = Paint()
-    ..strokeWidth = 10
+    ..strokeWidth = 5
+    ..style = PaintingStyle.stroke
     ..strokeCap = StrokeCap.round
-    ..color = Colors.yellow;
+    ..color = Colors.white;
 
   Offset circlePosition;
-  double circleRadius = 30;
+  double circleRadius = 100;
   SnowPainter({this.snows, this.snowImage});
 
   @override
   void paint(Canvas canvas, Size size) {
 
     circlePosition = Offset(size.width / 2, size.height);
+
     canvas.drawCircle(circlePosition, circleRadius , barrierPainter);
+    // canvas.drawArc(Rect.fromCircle(center: circlePosition, radius: circleRadius), pi,  pi / 2, true, snowBarrierPainter);
     for(var snow in snows) {
       if(snow.invalid) {
         if(snow.melted) {
@@ -60,14 +63,26 @@ class SnowPainter extends CustomPainter {
         snow.touchBarrier = true;
         // 碰壁后，我们假设雪花会与障碍物相交，假定雪花是圆的，那相交线 = 2 * snow.r,
         // 然后通过 snow.r 和 障碍物半斤 radius 反向求出相交后对应的圆夹角
+
+
         if(snow.touchRect == null) {
-          var angleSnow = 2 * asin(snow.r * 10 / circleRadius);
+          var multip = pow((snows.where((element) => element.touchRect != null).length / 2 ), 0.5);
+          var angleSnow = atan((snow.r * snowImage.width.toDouble() / 2) / circleRadius);
           snow.touchRect = Rect.fromCircle(center: circlePosition, radius: circleRadius);
-          snow.touchRadius = circleRadius;
-          snow.startAngle = -pi - angleSnow;
-          snow.swipeAngle = angleSnow;
+          snow.stroke = multip * 5;
+          snow.touchRadius = snow.r * snowImage.width.toDouble() / 2;
+          snow.startAngle = snow.x < circlePosition.dx ? pi + asin((circlePosition.dy - snow.y) / circleRadius) - angleSnow : 2* pi -(asin((circlePosition.dy - snow.y) / circleRadius));
+          snow.swipeAngle = snow.x < circlePosition.dx ? angleSnow * 2 : -angleSnow * 2;
+        } else {
+          snow.startAngle = snow.x <= circlePosition.dx ? snow.startAngle - pi / 10000 : snow.startAngle + pi / 10000;
+          if(snow.startAngle < pi || snow.startAngle > 2 * pi) {
+            snow.invalid = true;
+            snow.melted = true;
+            continue;
+          }
+          snow.stroke = snow.stroke - 0.001;
         }
-        canvas.drawArc(snow.touchRect, snow.startAngle, snow.swipeAngle, true, snowBarrierPainter);
+        canvas.drawArc(snow.touchRect, snow.startAngle, snow.swipeAngle, false, snowBarrierPainter..strokeWidth = snow.stroke);
         continue;
       }
 
@@ -83,7 +98,6 @@ class SnowPainter extends CustomPainter {
       }
 
       final melted = SnowMoving().melt(pushed);
-      canvas.drawCircle(Offset(melted.x, melted.y), snowImage.width.toDouble() * melted.r / 2, barrierPainter);
       canvas.drawImageRect(snowImage,
           Rect.fromLTWH(0, 0, snowImage.width.toDouble(), snowImage.height.toDouble()),
           Rect.fromLTWH(melted.x - snowImage.width.toDouble() * melted.r / 2, melted.y - snowImage.height.toDouble() * melted.r / 2, snowImage.width.toDouble() * melted.r, snowImage.height.toDouble() * melted.r) ,
@@ -103,7 +117,7 @@ class SnowPainter extends CustomPainter {
     
     // 勾股定理求雪球中心到障碍物中心距离
     double distance = pow((xToBarrier * xToBarrier + yToBarrier* yToBarrier), 0.5);
-    return distance <= circleRadius + r / 2;
+    return distance <= circleRadius;
     
   }
 
