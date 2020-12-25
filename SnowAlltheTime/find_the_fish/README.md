@@ -19,14 +19,19 @@
 ## 我也要玩
 - [前篇会带啥都不会的你画出一屏放飞自我的球球球球 >>](docs/让你的屏幕下个雪呗（前篇）.md)
 
-	<img src= https://s3.ax1x.com/2020/12/21/rBM4qf.gif width = 300 height = 600>
+	![](https://s3.ax1x.com/2020/12/21/rBM4qf.gif)
+	
 </br>
 
 - [后篇看完，你的屏幕也能拥有一场大雪啦 >>](docs/让你的屏幕下个雪呗（后篇）.md)
 
 	![](https://s3.ax1x.com/2020/12/21/rBJ8yj.gif)
 
+</br>
+
 
 - [再来个番外篇，这样就更有意思了 >>](docs/让你的屏幕下个雪呗 (番外篇).md)
 
 	![](https://s3.ax1x.com/2020/12/25/rfm7fx.gif)
+	
+</br>
