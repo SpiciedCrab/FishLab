@@ -40,9 +40,10 @@ class SnowBasicInfo {
   double startAngle;
   double swipeAngle;
   double stroke;
+  bool touchBarrier = false;
 
   bool invalid = false;
-  bool touchBarrier = false;
+
   bool melted = false;
   bool isUp = false;
   int upTimes = 0;

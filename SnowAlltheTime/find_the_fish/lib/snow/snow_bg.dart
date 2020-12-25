@@ -82,6 +82,7 @@ class _SnowBgState extends State<SnowBg>  {
 
   Widget falldown() {
     return CustomPaint(
+      // painter: FalldownPainter
       painter: ManyBallsPainter(snows: snow),
     );
   }

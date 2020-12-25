@@ -30,7 +30,7 @@ class SnowPainter extends CustomPainter {
     ..color = Colors.white;
 
   Offset circlePosition;
-  double circleRadius = 100;
+  double circleRadius = 50;
   SnowPainter({this.snows, this.snowImage});
 
   @override
@@ -58,23 +58,22 @@ class SnowPainter extends CustomPainter {
           continue;
         }
       }
-      
-      if(snow.r != 0 && (_checkDangerous(snow, size) || snow.touchBarrier)) {
+
+      if(snow.r != 0 && (_checkDangerous(snow) || snow.touchBarrier)) {
         snow.touchBarrier = true;
         // 碰壁后，我们假设雪花会与障碍物相交，假定雪花是圆的，那相交线 = 2 * snow.r,
         // 然后通过 snow.r 和 障碍物半斤 radius 反向求出相交后对应的圆夹角
 
-
         if(snow.touchRect == null) {
-          var multip = pow((snows.where((element) => element.touchRect != null).length / 2 ), 0.5);
+          var multip = pow((snows.where((element) => element.touchRect != null).length / 10 ), 0.5);
           var angleSnow = atan((snow.r * snowImage.width.toDouble() / 2) / circleRadius);
           snow.touchRect = Rect.fromCircle(center: circlePosition, radius: circleRadius);
-          snow.stroke = multip * 5;
+          snow.stroke = multip * snow.r * 10 ;
           snow.touchRadius = snow.r * snowImage.width.toDouble() / 2;
           snow.startAngle = snow.x < circlePosition.dx ? pi + asin((circlePosition.dy - snow.y) / circleRadius) - angleSnow : 2* pi -(asin((circlePosition.dy - snow.y) / circleRadius));
-          snow.swipeAngle = snow.x < circlePosition.dx ? angleSnow * 2 : -angleSnow * 2;
+          snow.swipeAngle = snow.x < circlePosition.dx ? angleSnow * 2 * snow.r / 2: -angleSnow * 2 * snow.r / 2;
         } else {
-          snow.startAngle = snow.x <= circlePosition.dx ? snow.startAngle - pi / 10000 : snow.startAngle + pi / 10000;
+          // snow.startAngle = snow.x <= circlePosition.dx ? snow.startAngle - pi / 1000 : snow.startAngle + pi / 1000;
           if(snow.startAngle < pi || snow.startAngle > 2 * pi) {
             snow.invalid = true;
             snow.melted = true;
@@ -107,18 +106,14 @@ class SnowPainter extends CustomPainter {
     }
   }
 
-  bool _checkDangerous(SnowBasicInfo snow, Size canvasSize) {
+  bool _checkDangerous(SnowBasicInfo snow) {
     // 我们通过snow的x，y距离底下障碍物的中心距离来判断snow会不会撞到障碍物
-    double canvasWidth = canvasSize.width;
-    double canvasHeight = canvasSize.height;
-    var r = snowImage.width.toDouble() * snow.r;
     double xToBarrier = (circlePosition.dx - (snow.x)).abs();
     double yToBarrier = (circlePosition.dy - (snow.y)).abs();
     
     // 勾股定理求雪球中心到障碍物中心距离
     double distance = pow((xToBarrier * xToBarrier + yToBarrier* yToBarrier), 0.5);
-    return distance <= circleRadius;
-    
+    return distance < circleRadius;
   }
 
   @override
