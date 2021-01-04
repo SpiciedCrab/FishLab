@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:find_the_fish/snow/caculators.dart';
 import 'package:find_the_fish/snow/falldown_painter.dart';
 import 'package:find_the_fish/snow/snow_painter.dart';
+import 'package:find_the_fish/thunder/thunder_painter.dart';
 import 'package:flutter/material.dart';
 
 import 'dart:ui' as ui;
@@ -75,15 +76,16 @@ class _SnowBgState extends State<SnowBg>  {
         color: Colors.black,
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: snowWidget(),
+        child: falldown(),
       )
     );
   }
 
+  var thunder = ThunderPoint();
   Widget falldown() {
     return CustomPaint(
       // painter: FalldownPainter
-      painter: ManyBallsPainter(snows: snow),
+      painter: ThunderPainter(thunder),
     );
   }
 
