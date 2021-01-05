@@ -1,6 +1,6 @@
 
 import 'dart:math';
-import 'dart:ui';
+import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
@@ -17,7 +17,7 @@ class ThunderPoint {
   List<ThunderPoint> subThunders = [];
 
   void split() {
-    bool random = Random().nextInt(100) % 8 == 1;
+    bool random = Random().nextInt(100) % 10 == 1;
     if(random) {
       lock = true;
       splitValue = -1;
@@ -72,15 +72,19 @@ class ThunderPainter extends CustomPainter {
     }
 
     thunderDrawing(thunder);
-    canvas.drawPoints(PointMode.polygon, thunder.offsets, painter
+    canvas.drawPoints(ui.PointMode.polygon, thunder.offsets, painter
       ..color = Colors.white.withOpacity(thunder.alpha)
-      ..strokeWidth = 10 * (size.height - thunder.y) / size.height);
+      // ..shader = ui.Gradient.sweep(
+      //     Offset(size.width / 2, size.height / 2), [ Colors.transparent, Colors.white,])
+      ..strokeWidth = 15 * (size.height - thunder.y) / size.height);
 
 
     thunder.subThunders.forEach((element) => thunderDrawing(element));
 
-    thunder.subThunders.forEach((element) => canvas.drawPoints(PointMode.polygon, element.offsets, painter
-      ..color = Colors.white.withOpacity(element.alpha)
+    thunder.subThunders.forEach((element) => canvas.drawPoints(ui.PointMode.polygon, element.offsets, painter
+      ..shader = ui.Gradient.sweep(
+          Offset(size.width / 2, size.height / 2), [Colors.transparent, Colors.white,])
+      // ..color = Colors.white.withOpacity(element.alpha)
       ..strokeWidth = 5 * (size.height - element.y) / size.height));
 
   }
