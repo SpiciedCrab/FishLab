@@ -5,7 +5,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 class ThunderPoint {
-  double x = 200;
+  double x = 0;
   double y = 0;
   double ay = 0.00009;
   double vy = 0;
@@ -16,45 +16,60 @@ class ThunderPoint {
   bool lock = false;
   List<ThunderPoint> subThunders = [];
 
+  ThunderPoint() {
+    _setup();
+  }
+
+  _setup() {
+    x = 100 + Random().nextInt(300).toDouble();
+    ay = 0.0001 * (0.5 + Random().nextInt(50) / 100);
+    alpha = Random().nextInt(10) / 10;
+    va = 0.0001;
+  }
+
   void split() {
-    bool random = Random().nextInt(100) % 10 == 1;
+    bool random = Random().nextInt(100) * (y.toInt() ~/ 100) % 2 == 1;
     if(random) {
       lock = true;
-      splitValue = -1;
-      subThunders.add(ThunderPoint()..x = x..y = y..alpha = alpha..splitValue = 1);
+      double randomInt = Random().nextBool() ? 1 : -1;
+      splitValue = randomInt;
+      subThunders.add(ThunderPoint()..x = x..y = y..alpha = alpha..splitValue = -randomInt);
       // subThunders.add(ThunderPoint()..x = x..y = y..alpha = alpha..splitValue = -0.8);
     }
   }
   reset() {
     y = 0;
-    x = 200;
     vy = 0;
     offsets.clear();
     subThunders.clear();
-    alpha = 1;
+    _setup();
     lock = false;
   }
 }
 
 class ThunderPainter extends CustomPainter {
 
-  ThunderPoint thunder;
+  List<ThunderPoint> thunders;
 
-  ThunderPainter(this.thunder);
+  ThunderPainter(this.thunders);
 
   var painter = Paint()..strokeWidth = 1
     ..color = Colors.white
+    ..strokeCap = ui.StrokeCap.square
     ..style = PaintingStyle.stroke;
 
   @override
   void paint(Canvas canvas, Size size) {
-    List<Offset> current = [];
     void thunderDrawing(ThunderPoint t) {
       if(t.y <= size.height && t.alpha > 0) {
-        for(int i = 0; i <= 200 ;i ++) {
+        var randomMax = Random().nextInt(500);
+        for(int i = 0; i <= randomMax ;i ++) {
           double randomInt = (Random().nextBool() ? 1 : -1);
-          var value = randomInt *  (Random().nextInt(30)  / 30) ;
+          var value = randomInt *  (t.splitValue == null ? (Random().nextInt(30)  / 1000) : Random().nextInt(100)  / 100) ;
           double finalValue = randomInt * (t.splitValue ?? 0)  >= 0 ? value * 1 : value * 0.85;
+          if(t.splitValue != 0) {
+            finalValue = finalValue * 1.5;
+          }
           t.x = t.x + finalValue ;
           t.vy = t.ay + t.vy;
           t.y = t.y + t.vy;
@@ -71,21 +86,24 @@ class ThunderPainter extends CustomPainter {
       }
     }
 
-    thunderDrawing(thunder);
-    canvas.drawPoints(ui.PointMode.polygon, thunder.offsets, painter
-      ..color = Colors.white.withOpacity(thunder.alpha)
+    for(var thunder in thunders) {
+      thunderDrawing(thunder);
+      canvas.drawPoints(ui.PointMode.polygon, thunder.offsets, painter
+        ..color = Colors.white.withOpacity(thunder.alpha)
       // ..shader = ui.Gradient.sweep(
       //     Offset(size.width / 2, size.height / 2), [ Colors.transparent, Colors.white,])
-      ..strokeWidth = 15 * (size.height - thunder.y) / size.height);
+        ..strokeWidth = Random().nextInt(5) * (size.height - thunder.y) / size.height);
 
 
-    thunder.subThunders.forEach((element) => thunderDrawing(element));
+      thunder.subThunders.forEach((element) => thunderDrawing(element));
 
-    thunder.subThunders.forEach((element) => canvas.drawPoints(ui.PointMode.polygon, element.offsets, painter
-      ..shader = ui.Gradient.sweep(
-          Offset(size.width / 2, size.height / 2), [Colors.transparent, Colors.white,])
+      thunder.subThunders.forEach((element) => canvas.drawPoints(ui.PointMode.polygon, element.offsets, painter
+        ..shader = ui.Gradient.sweep(
+            Offset(size.width / 2, size.height / 2), [Colors.transparent, Colors.white.withOpacity(element.alpha),])
       // ..color = Colors.white.withOpacity(element.alpha)
-      ..strokeWidth = 5 * (size.height - element.y) / size.height));
+        ..strokeWidth = 2 * (size.height - element.y) / size.height));
+    }
+
 
   }
 
