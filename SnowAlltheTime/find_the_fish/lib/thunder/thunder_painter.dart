@@ -12,6 +12,7 @@ class ThunderPoint {
   double alpha = 1;
   double splitValue;
   double va = 0.0001;
+  int maxSpeed = 1000;
   List<Offset> offsets = [];
   bool lock = false;
   List<ThunderPoint> subThunders = [];
@@ -21,7 +22,7 @@ class ThunderPoint {
   }
 
   _setup() {
-    x = 100 + Random().nextInt(300).toDouble();
+    x = 200 + Random().nextInt(100).toDouble();
     ay = 0.0001 * (0.5 + Random().nextInt(50) / 100);
     alpha = Random().nextInt(10) / 10;
     va = 0.0001;
@@ -40,6 +41,7 @@ class ThunderPoint {
   reset() {
     y = 0;
     vy = 0;
+    maxSpeed = 100 + Random().nextInt(100);
     offsets.clear();
     subThunders.clear();
     _setup();
@@ -62,8 +64,7 @@ class ThunderPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     void thunderDrawing(ThunderPoint t) {
       if(t.y <= size.height && t.alpha > 0) {
-        var randomMax = Random().nextInt(500);
-        for(int i = 0; i <= randomMax ;i ++) {
+        for(int i = 0; i <= t.maxSpeed ;i ++) {
           double randomInt = (Random().nextBool() ? 1 : -1);
           var value = randomInt *  (t.splitValue == null ? (Random().nextInt(30)  / 1000) : Random().nextInt(100)  / 100) ;
           double finalValue = randomInt * (t.splitValue ?? 0)  >= 0 ? value * 1 : value * 0.85;

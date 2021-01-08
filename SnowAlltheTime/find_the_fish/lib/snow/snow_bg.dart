@@ -81,7 +81,7 @@ class _SnowBgState extends State<SnowBg>  {
     );
   }
 
-  var thunder = [ThunderPoint(), ThunderPoint(), ThunderPoint()];
+  var thunder = [ThunderPoint()];
   Widget falldown() {
     return CustomPaint(
       // painter: FalldownPainter
