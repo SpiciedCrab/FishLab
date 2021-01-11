@@ -76,19 +76,12 @@ class _SnowBgState extends State<SnowBg>  {
         color: Colors.black,
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        child: falldown(),
+        child: snowWidget(),
       )
     );
   }
 
   var thunder = [ThunderPoint()];
-  Widget falldown() {
-    return CustomPaint(
-      // painter: FalldownPainter
-      painter: ThunderPainter(thunder),
-    );
-  }
-
   Widget snowWidget() {
     return FutureBuilder(
       future: load('assets/xuehua.png').then((value) => _rotatedImage(image: value, angle:_now.millisecond * radiansPerSecond)),
@@ -121,5 +114,13 @@ class _SnowBgState extends State<SnowBg>  {
     canvas.drawImage(image, Offset.zero, Paint());
 
     return pictureRecorder.endRecording().toImage(image.width, image.height);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _timer.cancel();
+    _timer = null;
   }
 }

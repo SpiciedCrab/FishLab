@@ -66,7 +66,7 @@ class ThunderPainter extends CustomPainter {
       if(t.y <= size.height && t.alpha > 0) {
         for(int i = 0; i <= t.maxSpeed ;i ++) {
           double randomInt = (Random().nextBool() ? 1 : -1);
-          var value = randomInt *  (t.splitValue == null ? (Random().nextInt(30)  / 1000) : Random().nextInt(100)  / 100) ;
+          var value = randomInt *  (t.splitValue == null ? (Random().nextInt(30)  / 1000) : Random().nextInt(60)  / 100) ;
           double finalValue = randomInt * (t.splitValue ?? 0)  >= 0 ? value * 1 : value * 0.85;
           if(t.splitValue != 0) {
             finalValue = finalValue * 1.5;
@@ -91,8 +91,8 @@ class ThunderPainter extends CustomPainter {
       thunderDrawing(thunder);
       canvas.drawPoints(ui.PointMode.polygon, thunder.offsets, painter
         ..color = Colors.white.withOpacity(thunder.alpha)
-      // ..shader = ui.Gradient.sweep(
-      //     Offset(size.width / 2, size.height / 2), [ Colors.transparent, Colors.white,])
+      ..shader = ui.Gradient.sweep(
+          Offset(size.width / 2, size.height / 2), [ Colors.transparent, Colors.white,])
         ..strokeWidth = Random().nextInt(5) * (size.height - thunder.y) / size.height);
 
 
@@ -101,7 +101,7 @@ class ThunderPainter extends CustomPainter {
       thunder.subThunders.forEach((element) => canvas.drawPoints(ui.PointMode.polygon, element.offsets, painter
         ..shader = ui.Gradient.sweep(
             Offset(size.width / 2, size.height / 2), [Colors.transparent, Colors.white.withOpacity(element.alpha),])
-      // ..color = Colors.white.withOpacity(element.alpha)
+      ..color = Colors.white.withOpacity(element.alpha)
         ..strokeWidth = 2 * (size.height - element.y) / size.height));
     }
 
