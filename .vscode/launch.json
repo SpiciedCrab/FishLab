@@ -1,0 +1,48 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "find_the_fish",
+            "cwd": "SnowAlltheTime/find_the_fish",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "find_the_fish (profile mode)",
+            "cwd": "SnowAlltheTime/find_the_fish",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "find_the_fish (release mode)",
+            "cwd": "SnowAlltheTime/find_the_fish",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "thunder",
+            "cwd": "Thunder/thunder",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "thunder (profile mode)",
+            "cwd": "Thunder/thunder",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "thunder (release mode)",
+            "cwd": "Thunder/thunder",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

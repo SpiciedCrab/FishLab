@@ -24,10 +24,10 @@ class MyApp extends StatelessWidget {
         body: Builder(
           builder: (ctx) => Column(
             children: [
-              FlatButton(onPressed: () => Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) => SnowBg())),
+              ElevatedButton(onPressed: () => Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) => SnowBg())),
                   child: Text('下雪啦')),
               SizedBox(height: 10,),
-              FlatButton(onPressed: () => Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) => ThunderBg())),
+              ElevatedButton(onPressed: () => Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) => ThunderBg())),
                   child: Text('闪电啦')),
             ],
           ),
