@@ -1,64 +1,69 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui' as ui;
 
 import 'package:find_the_fish/snow/caculators.dart';
-import 'package:find_the_fish/snow/falldown_painter.dart';
-import 'package:find_the_fish/snow/snow_painter.dart';
-import 'package:find_the_fish/thunder/thunder_painter.dart';
 import 'package:find_the_fish/utils/load_image.dart';
 import 'package:flutter/material.dart';
-
-import 'dart:ui' as ui;
-import 'package:flutter/services.dart';
-import 'package:vector_math/vector_math_64.dart' as vector;
+import 'decoration_painter.dart';
 
 final radiansPerSecond = 2 * pi / 1000.0;
+String url = "https://res-qa.app.ikea.cn/content/u/20221117/51f76a0e98164f23a0887adecdd4eae5.png";
 
-class SnowBg extends StatefulWidget {
+class DecorationBg extends StatefulWidget {
+  String imageUrl;
+  DecorationBg({this.imageUrl});
+
   @override
-  _SnowBgState createState() => _SnowBgState();
+  _DecorationBgState createState() => _DecorationBgState();
 }
 
-class _SnowBgState extends State<SnowBg>  {
+class _DecorationBgState extends State<DecorationBg>  {
 
   Timer _timer;
+  ui.Image _netImageFrame;//网络图片
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _updateTimer();
+    // _getNetImage(widget.imageUrl);
+    _getNetImage(url);
   }
-
 
   var _now = DateTime.now();
   _updateTimer() {
     setState(() {
       _now = DateTime.now();
-      _timer = Timer((Duration(milliseconds: 1)), (){
+      _timer = Timer((Duration(milliseconds: 16)), (){
         _updateTimer();
       });
     });
 
   }
 
-  double windowWidth;
+  _getNetImage(String url) async {
+    ui.Image imageFrame = await loadImageByUrl(url, width: 40, height: 40);
+    setState(() {
+      _netImageFrame = imageFrame;
+    });
+  }
+
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
   }
 
-  var snow = List.generate(10, (index) => SnowBasicInfo(x: Random().nextInt(400).toDouble() , y: - Random().nextInt(50).toDouble(), r: SnowInfoUtils.snowRadius));
+  var snow = List.generate(5, (index) => SnowBasicInfo(x: Random().nextInt(400).toDouble() , y: - Random().nextInt(500).toDouble(), r: SnowInfoUtils.snowRadius));
 
   List<SnowBasicInfo> moreSnow() {
-    return List.generate(Random().nextInt(5), (index) => SnowBasicInfo(x: Random().nextInt(400).toDouble() , y: - Random().nextInt(100).toDouble(), r: SnowInfoUtils.snowRadius));
+    return List.generate(Random().nextInt(3), (index) => SnowBasicInfo(x: Random().nextInt(400).toDouble() , y: - Random().nextInt(1000).toDouble(), r: SnowInfoUtils.snowRadius));
   }
 
   @override
   Widget build(BuildContext context) {
-    if(_now.millisecond % 10 == 0) {
+    if(_now.millisecond % 20 == 0) {
       snow.addAll(moreSnow());
     }
 
@@ -74,18 +79,19 @@ class _SnowBgState extends State<SnowBg>  {
       )
     );
   }
-
-  var thunder = [ThunderPoint()];
   Widget snowWidget() {
+    if(_netImageFrame == null) {
+      return Container();
+    }
     return FutureBuilder(
-      future: loadImageByAsset('assets/xuehua.png').then((value) => _rotatedImage(image: value, angle:_now.millisecond * radiansPerSecond)),
+      future: _rotatedImage(image: _netImageFrame, angle: 0),
       builder: (ctx, snp) {
         var data = snp.data;
         if(data == null) {
           return Container();
         } else {
           return CustomPaint(
-            painter: SnowPainter(snows: snow, snowImage: data),
+            painter: DecorationPainter(snows: snow, snowImage: data),
           );
         }
       },
@@ -95,7 +101,6 @@ class _SnowBgState extends State<SnowBg>  {
   Future<ui.Image> _rotatedImage({ui.Image image, double angle}) {
     var pictureRecorder = ui.PictureRecorder();
     Canvas canvas = Canvas(pictureRecorder);
-
     final double r = sqrt(image.width * image.width + image.height * image.height) / 2;
     final alpha = atan(image.height / image.width);
     final beta = alpha + angle;
@@ -104,9 +109,8 @@ class _SnowBgState extends State<SnowBg>  {
     final translateX = image.width / 2 - shiftX;
     final translateY = image.height / 2 - shiftY;
     canvas.translate(translateX, translateY);
-    canvas.rotate(angle);
+    // canvas.rotate(angle);
     canvas.drawImage(image, Offset.zero, Paint());
-
     return pictureRecorder.endRecording().toImage(image.width, image.height);
   }
 
@@ -118,3 +122,5 @@ class _SnowBgState extends State<SnowBg>  {
     _timer = null;
   }
 }
+
+// }
