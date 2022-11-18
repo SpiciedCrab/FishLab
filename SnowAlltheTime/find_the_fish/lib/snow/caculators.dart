@@ -6,7 +6,7 @@ class SnowInfoUtils {
 
   // 单个雪花体积
   // static double get snowOriginSize => math.Random().nextInt(30).toDouble() ;
-  static double get snowRadius => math.Random().nextInt(4).toDouble(); 
+  static double get snowRadius => math.Random().nextDouble() + 1; 
 
   // 秒级重力加速度 ay
   static double get ga => math.Random().nextInt(100) * math.Random().nextInt(1000).toDouble() / 1000 ;

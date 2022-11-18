@@ -78,7 +78,7 @@ class _SnowBgState extends State<SnowBg>  {
   var thunder = [ThunderPoint()];
   Widget snowWidget() {
     return FutureBuilder(
-      future: loadImageByAsset('assets/xuehua.png').then((value) => _rotatedImage(image: value, angle:_now.millisecond * radiansPerSecond)),
+      future: loadImageByAsset('assets/xuehua.png').then((value) => _rotatedImage(image: value, angle: _now.millisecond * radiansPerSecond)),
       builder: (ctx, snp) {
         var data = snp.data;
         if(data == null) {

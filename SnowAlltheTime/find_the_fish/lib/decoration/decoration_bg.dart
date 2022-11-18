@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'decoration_painter.dart';
 
 final radiansPerSecond = 2 * pi / 1000.0;
-String url = "https://res-qa.app.ikea.cn/content/u/20221117/51f76a0e98164f23a0887adecdd4eae5.png";
+String url = "https://res-qa.app.ikea.cn/content/u/20221118/af49ccc4856341f98be02370c748d52a.png";
 
 class DecorationBg extends StatefulWidget {
   String imageUrl;
@@ -35,7 +35,7 @@ class _DecorationBgState extends State<DecorationBg>  {
   _updateTimer() {
     setState(() {
       _now = DateTime.now();
-      _timer = Timer((Duration(milliseconds: 16)), (){
+      _timer = Timer((Duration(milliseconds: 1)), (){
         _updateTimer();
       });
     });
