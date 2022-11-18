@@ -31,13 +31,13 @@ class DecorationPainter extends CustomPainter {
       if(falled.y >= size.height - 20) {
         falled.firstUp();
       }
-
+      double ratio = snowImage.width / snowImage.height;
       canvas.drawImageRect(snowImage,
           Rect.fromLTWH(0, 0, snowImage.width.toDouble(), snowImage.height.toDouble()),
           Rect.fromLTWH(falled.x - snowImage.width.toDouble() * falled.r / 2, 
                         falled.y - snowImage.height.toDouble() * falled.r / 2, 
-                        snowImage.width.toDouble() * falled.r, 
-                        snowImage.height.toDouble() * falled.r) ,
+                        50 * falled.r, 
+                        50 * ratio * falled.r) ,
           pointPainter);
     }
   }
