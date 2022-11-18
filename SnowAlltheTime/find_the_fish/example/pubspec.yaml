@@ -24,7 +24,6 @@ dependencies:
   flutter:
     sdk: flutter
 
-  cached_network_image:
   find_the_fish:
     path: ../
 
