@@ -73,7 +73,7 @@ class _DecorationBgState extends State<DecorationBg>  {
         title: Text(_now.millisecondsSinceEpoch.toString()),
       ),
       body: Container(
-        color: Colors.black,
+        color: Colors.transparent,
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: snowWidget(),
