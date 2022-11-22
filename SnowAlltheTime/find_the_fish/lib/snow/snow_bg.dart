@@ -21,7 +21,7 @@ class SnowBg extends StatefulWidget {
 
 class _SnowBgState extends State<SnowBg>  {
 
-  Timer _timer;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -42,7 +42,7 @@ class _SnowBgState extends State<SnowBg>  {
 
   }
 
-  double windowWidth;
+  late double windowWidth;
 
   @override
   void didChangeDependencies() {
@@ -77,7 +77,7 @@ class _SnowBgState extends State<SnowBg>  {
 
   var thunder = [ThunderPoint()];
   Widget snowWidget() {
-    return FutureBuilder(
+    return FutureBuilder<ui.Image?>(
       future: loadImageByAsset('assets/xuehua.png').then((value) => _rotatedImage(image: value, angle: _now.millisecond * radiansPerSecond)),
       builder: (ctx, snp) {
         var data = snp.data;
@@ -92,13 +92,13 @@ class _SnowBgState extends State<SnowBg>  {
     );
   }
 
-  Future<ui.Image> _rotatedImage({ui.Image image, double angle}) {
+  Future<ui.Image> _rotatedImage({ui.Image? image, double? angle}) {
     var pictureRecorder = ui.PictureRecorder();
     Canvas canvas = Canvas(pictureRecorder);
 
-    final double r = sqrt(image.width * image.width + image.height * image.height) / 2;
+    final double r = sqrt(image!.width * image.width + image.height * image.height) / 2;
     final alpha = atan(image.height / image.width);
-    final beta = alpha + angle;
+    final beta = alpha + angle!;
     final shiftY = r * sin(beta);
     final shiftX = r * cos(beta);
     final translateX = image.width / 2 - shiftX;
@@ -114,7 +114,6 @@ class _SnowBgState extends State<SnowBg>  {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _timer.cancel();
-    _timer = null;
+    _timer?.cancel();
   }
 }

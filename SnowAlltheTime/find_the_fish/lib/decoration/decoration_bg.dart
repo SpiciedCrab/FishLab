@@ -12,7 +12,7 @@ final radiansPerSecond = 2 * pi / 1000.0;
 String url = "https://res-qa.app.ikea.cn/content/u/20221118/af49ccc4856341f98be02370c748d52a.png";
 
 class DecorationBg extends StatefulWidget {
-  String imageUrl;
+  final String? imageUrl;
   DecorationBg({this.imageUrl});
 
   @override
@@ -21,15 +21,16 @@ class DecorationBg extends StatefulWidget {
 
 class _DecorationBgState extends State<DecorationBg>  {
 
-  Timer _timer;
-  ui.Image _netImageFrame;//网络图片
+  Timer? _timer;
+  ui.Image? _netImageFrame;//网络图片
 
   @override
   void initState() {
     super.initState();
-    _updateTimer();
-    // _getNetImage(widget.imageUrl);
-    _getNetImage(widget.imageUrl ?? '');
+    if(widget.imageUrl != null) {
+      _updateTimer();
+      _getNetImage(widget.imageUrl ?? '');
+    }
   }
 
   var _now = DateTime.now();
@@ -64,6 +65,10 @@ class _DecorationBgState extends State<DecorationBg>  {
 
   @override
   Widget build(BuildContext context) {
+    if(widget.imageUrl == null) {
+      return Container();
+    }
+
     if(_now.millisecond % 20 == 0) {
       snow.addAll(moreSnow());
     }
@@ -81,11 +86,11 @@ class _DecorationBgState extends State<DecorationBg>  {
     );
   }
   Widget snowWidget() {
-    if(_netImageFrame == null) {
+    if(_netImageFrame == null || snow.isEmpty) {
       return Container();
     }
-    return FutureBuilder(
-      future: _rotatedImage(image: _netImageFrame, angle: 0),
+    return FutureBuilder<ui.Image?>(
+      future: _rotatedImage(image: _netImageFrame!, angle: 0),
       builder: (ctx, snp) {
         var data = snp.data;
         if(data == null) {
@@ -99,7 +104,7 @@ class _DecorationBgState extends State<DecorationBg>  {
     );
   }
 
-  Future<ui.Image> _rotatedImage({ui.Image image, double angle}) {
+  Future<ui.Image> _rotatedImage({required ui.Image image, required double angle}) {
     var pictureRecorder = ui.PictureRecorder();
     Canvas canvas = Canvas(pictureRecorder);
     final double r = sqrt(image.width * image.width + image.height * image.height) / 2;
@@ -119,9 +124,7 @@ class _DecorationBgState extends State<DecorationBg>  {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _timer.cancel();
+    _timer?.cancel();
     _timer = null;
   }
 }
-
-// }

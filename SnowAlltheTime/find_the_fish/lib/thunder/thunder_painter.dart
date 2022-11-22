@@ -10,7 +10,7 @@ class ThunderPoint {
   double ay = 0.00009;
   double vy = 0;
   double alpha = 1;
-  double splitValue;
+  double splitValue = 0;
   double va = 0.0001;
   int maxSpeed = 1000;
   List<Offset> offsets = [];

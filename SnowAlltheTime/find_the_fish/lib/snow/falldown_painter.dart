@@ -98,13 +98,15 @@ class FalldownPainter extends CustomPainter {
 
 class ManyBallsPainter extends CustomPainter {
 
-  List<SnowBasicInfo> snows;
+  final List<SnowBasicInfo>? snows;
 
   ManyBallsPainter({this.snows});
 
   @override
   void paint(Canvas canvas, Size size) {
-    snows.forEach((element) {
+    if(snows == null || snows!.isEmpty) return;
+    
+    snows!.forEach((element) {
       element.ay = element.isUp ? math.pow(1.2, element.upTimes) * 60 / 1000 : 60 / 1000;
       if(element.y > size.height) {
         element.vy = -element.vy;

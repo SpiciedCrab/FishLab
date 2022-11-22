@@ -3,6 +3,7 @@ import 'package:find_the_fish/thunder/thunder_bg.dart';
 import 'package:flutter/material.dart';
 
 import 'package:find_the_fish/decoration/decoration_bg.dart';
+String url = "https://res-qa.app.ikea.cn/content/u/20221118/af49ccc4856341f98be02370c748d52a.png";
 
 void main() {
   runApp(MyApp());
@@ -24,18 +25,21 @@ class MyApp extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(title: Text('最新更新：闪⚡️'),),
         body: Builder(
-          builder: (ctx) => Column(
-            children: [
-              ElevatedButton(onPressed: () => Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) => DecorationBg())),
-                  child: Text('掉氛围啦')),
-                  SizedBox(height: 10,),
-              ElevatedButton(onPressed: () => Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) => SnowBg())),
-                  child: Text('下雪啦')),
-              SizedBox(height: 10,),
-              ElevatedButton(onPressed: () => Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) => ThunderBg())),
-                  child: Text('闪电啦')),
-            ],
-          ),
+          builder: (ctx) => Container(
+            color: Colors.pink,
+            child: Column(
+              children: [
+                ElevatedButton(onPressed: () => Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) => DecorationBg(imageUrl: url,))),
+                    child: Text('掉氛围啦')),
+                    SizedBox(height: 10,),
+                ElevatedButton(onPressed: () => Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) => SnowBg())),
+                    child: Text('下雪啦')),
+                SizedBox(height: 10,),
+                ElevatedButton(onPressed: () => Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) => ThunderBg())),
+                    child: Text('闪电啦')),
+              ],
+            ),
+          )
         ),
       ),
     );

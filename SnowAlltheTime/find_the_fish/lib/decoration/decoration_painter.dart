@@ -7,18 +7,18 @@ import 'dart:ui' as ui;
 
 class DecorationPainter extends CustomPainter {
 
-  List<SnowBasicInfo> snows;
-  ui.Image snowImage;
-  Paint pointPainter = Paint();
+  final List<SnowBasicInfo>? snows;
+  final ui.Image? snowImage;
+  final Paint? pointPainter = Paint();
 
   DecorationPainter({this.snows, this.snowImage});
 
   @override
   Future<void> paint(Canvas canvas, Size size) async {
 
-    if(snowImage == null) return;
+    if(snowImage == null || snows == null || snows!.isEmpty) return;
 
-    for(var snow in snows) {
+    for(var snow in snows!) {
       if(snow.invalid) {
         if(snow.melted) {
           continue;
@@ -31,14 +31,14 @@ class DecorationPainter extends CustomPainter {
       if(falled.y >= size.height - 20) {
         falled.firstUp();
       }
-      double ratio = snowImage.width / snowImage.height;
-      canvas.drawImageRect(snowImage,
-          Rect.fromLTWH(0, 0, snowImage.width.toDouble(), snowImage.height.toDouble()),
-          Rect.fromLTWH(falled.x - snowImage.width.toDouble() * falled.r / 2, 
-                        falled.y - snowImage.height.toDouble() * falled.r / 2, 
+      double ratio = snowImage!.width / snowImage!.height;
+      canvas.drawImageRect(snowImage!,
+          Rect.fromLTWH(0, 0, snowImage!.width.toDouble(), snowImage!.height.toDouble()),
+          Rect.fromLTWH(falled.x - snowImage!.width.toDouble() * falled.r / 2, 
+                        falled.y - snowImage!.height.toDouble() * falled.r / 2, 
                         50 * falled.r, 
                         50 * ratio * falled.r) ,
-          pointPainter);
+          pointPainter!);
     }
   }
 

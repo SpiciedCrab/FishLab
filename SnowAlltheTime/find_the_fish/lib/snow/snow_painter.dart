@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 class SnowPainter extends CustomPainter {
 
-  List<SnowBasicInfo> snows;
-  ui.Image snowImage;
+  final List<SnowBasicInfo>? snows;
+  final ui.Image? snowImage;
   Paint pointPainter = Paint()
     ..colorFilter = ColorFilter.linearToSrgbGamma()
     ..color = Colors.white;
@@ -29,25 +29,27 @@ class SnowPainter extends CustomPainter {
     ..strokeCap = StrokeCap.round
     ..color = Colors.white;
 
-  Offset circlePosition;
+  Offset circlePosition = Offset(0, 0);
   double circleRadius = 50;
   SnowPainter({this.snows, this.snowImage});
 
   @override
   void paint(Canvas canvas, Size size) {
 
+    if(snowImage == null || snows == null || snows!.isEmpty) return;
+
     circlePosition = Offset(size.width / 2, size.height);
 
     canvas.drawCircle(circlePosition, circleRadius , barrierPainter);
     // canvas.drawArc(Rect.fromCircle(center: circlePosition, radius: circleRadius), pi,  pi / 2, true, snowBarrierPainter);
-    for(var snow in snows) {
+    for(var snow in snows!) {
       if(snow.invalid) {
         if(snow.melted) {
           continue;
         } else {
           // 当invalid = true 并且雪还没融化，就说明他会积雪
           if(snow.meltedStart == null) {
-            var multip = pow((snows.where((element) => element.meltedStart != null).length / 20), 0.5);
+            var multip = pow((snows!.where((element) => element.meltedStart != null).length / 20), 0.5);
             var referredR = snow.r * 10 * multip;
             snow.r = referredR;
             snow.meltedStart = Offset(snow.x - referredR / 2, size.height - referredR / 2);
@@ -65,11 +67,11 @@ class SnowPainter extends CustomPainter {
         // 然后通过 snow.r 和 障碍物半斤 radius 反向求出相交后对应的圆夹角
 
         if(snow.touchRect == null) {
-          var multip = pow((snows.where((element) => element.touchRect != null).length / 10 ), 0.5);
-          var angleSnow = atan((snow.r * snowImage.width.toDouble() / 2) / circleRadius);
+          var multip = pow((snows!.where((element) => element.touchRect != null).length / 10 ), 0.5);
+          var angleSnow = atan((snow.r * snowImage!.width.toDouble() / 2) / circleRadius);
           snow.touchRect = Rect.fromCircle(center: circlePosition, radius: circleRadius);
           snow.stroke = multip * snow.r * 10 ;
-          snow.touchRadius = snow.r * snowImage.width.toDouble() / 2;
+          snow.touchRadius = snow.r * snowImage!.width.toDouble() / 2;
           snow.startAngle = snow.x < circlePosition.dx ? pi + asin((circlePosition.dy - snow.y) / circleRadius) - angleSnow : 2* pi -(asin((circlePosition.dy - snow.y) / circleRadius));
           snow.swipeAngle = snow.x < circlePosition.dx ? angleSnow * 2 * snow.r / 2: -angleSnow * 2 * snow.r / 2;
         } else {
@@ -97,9 +99,12 @@ class SnowPainter extends CustomPainter {
       }
 
       final melted = SnowMoving().melt(pushed);
-      canvas.drawImageRect(snowImage,
-          Rect.fromLTWH(0, 0, snowImage.width.toDouble(), snowImage.height.toDouble()),
-          Rect.fromLTWH(melted.x - snowImage.width.toDouble() * melted.r / 2, melted.y - snowImage.height.toDouble() * melted.r / 2, snowImage.width.toDouble() * melted.r, snowImage.height.toDouble() * melted.r) ,
+      canvas.drawImageRect(snowImage!,
+          Rect.fromLTWH(0, 0, snowImage!.width.toDouble(), snowImage!.height.toDouble()),
+          Rect.fromLTWH(melted.x - snowImage!.width.toDouble() * melted.r / 2, 
+                        melted.y - snowImage!.height.toDouble() * melted.r / 2, 
+                        snowImage!.width.toDouble() * melted.r, 
+                        snowImage!.height.toDouble() * melted.r) ,
           pointPainter);
 
 
@@ -108,11 +113,11 @@ class SnowPainter extends CustomPainter {
 
   bool _checkDangerous(SnowBasicInfo snow) {
     // 我们通过snow的x，y距离底下障碍物的中心距离来判断snow会不会撞到障碍物
-    double xToBarrier = (circlePosition.dx - (snow.x)).abs();
-    double yToBarrier = (circlePosition.dy - (snow.y)).abs();
+    num xToBarrier = (circlePosition.dx - (snow.x)).abs();
+    num yToBarrier = (circlePosition.dy - (snow.y)).abs();
     
     // 勾股定理求雪球中心到障碍物中心距离
-    double distance = pow((xToBarrier * xToBarrier + yToBarrier* yToBarrier), 0.5);
+    num distance = pow((xToBarrier * xToBarrier + yToBarrier* yToBarrier), 0.5);
     return distance < circleRadius;
   }
 

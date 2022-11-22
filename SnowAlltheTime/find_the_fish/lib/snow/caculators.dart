@@ -27,26 +27,27 @@ class SnowInfoUtils {
 }
 
 class SnowBasicInfo {
-  double x, y, r;
-  double vx, vy, vr;
+  late double x, y, r;
+  late double vx, vy, vr;
 
-  double ax, ay, ar;
+  late double ax, ay;
+  late double ar;
 
-  Offset meltedStart;
-  Offset meltedEnd;
+  late Offset meltedStart;
+  late Offset meltedEnd;
 
-  Rect touchRect;
-  double touchRadius;
-  double startAngle;
-  double swipeAngle;
-  double stroke;
-  bool touchBarrier = false;
+  late Rect touchRect;
+  late double touchRadius;
+  late double startAngle;
+  late double swipeAngle;
+  late double stroke;
+  late bool touchBarrier = false;
 
-  bool invalid = false;
+  late bool invalid = false;
 
-  bool melted = false;
-  bool isUp = false;
-  int upTimes = 0;
+  late bool melted = false;
+  late bool isUp = false;
+  late int upTimes = 0;
 
   firstUp() {
     vy = - vy;
@@ -59,7 +60,7 @@ class SnowBasicInfo {
   SnowBasicInfo({this.x = 0, this.y = 0, this.r = 10,
     this.vx = 0,
     this.vr = 0,
-    this.vy = 0, this.ax = 0, this.ay = 0, this.ar}) {
+    this.vy = 0, this.ax = 0, this.ay = 0, this.ar = 0}) {
     vx = SnowInfoUtils.wa;
   }
 }

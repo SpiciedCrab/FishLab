@@ -20,7 +20,7 @@ class ThunderBg extends StatefulWidget {
 
 class _ThunderBgState extends State<ThunderBg>  {
 
-  Timer _timer;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -64,7 +64,6 @@ class _ThunderBgState extends State<ThunderBg>  {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _timer.cancel();
-    _timer = null;
+    _timer?.cancel();
   }
 }
