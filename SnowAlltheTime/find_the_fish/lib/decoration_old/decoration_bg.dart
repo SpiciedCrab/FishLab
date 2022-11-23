@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'decoration_painter.dart';
 
 final radiansPerSecond = 2 * pi / 1000.0;
-// 测试图片
-String url = "https://res-qa.app.ikea.cn/content/u/20221118/af49ccc4856341f98be02370c748d52a.png";
 
 class DecorationBg extends StatefulWidget {
   final String? imageUrl;
@@ -78,7 +76,6 @@ class _DecorationBgState extends State<DecorationBg>  {
         title: Text(_now.millisecondsSinceEpoch.toString()),
       ),
       body: Container(
-        color: Colors.transparent,
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
         child: snowWidget(),
