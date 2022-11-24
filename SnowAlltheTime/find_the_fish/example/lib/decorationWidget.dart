@@ -19,12 +19,16 @@ class _DecorationState extends State<DecorationWidget> with SingleTickerProvider
     super.initState();
     controller = AnimationController(duration: const Duration(seconds: 1), vsync: this);
     if(widget.url != null) {
-      controller.forward();
+      Future.delayed(Duration(milliseconds: 500), () => controller.forward());
     }
 
     controller.addStatusListener((status) {
       if(status == AnimationStatus.completed) {
-        Future.delayed(Duration(seconds: 3), (){ controller.reverse(); });
+        Future.delayed(Duration(seconds: 3), (){ 
+          if(mounted) {
+            controller.reverse();
+          }
+        });
       }
     });
     
@@ -43,7 +47,7 @@ class _DecorationState extends State<DecorationWidget> with SingleTickerProvider
     } else {
       return FadeTransition(
         opacity: controller,
-        child: DecorationBgWidget(imageUrl: widget.url, options: DecorationOptions().copyWith(small: 48, large: 68))
+        child: DecorationBgWidget(imageUrl: widget.url, options: DecorationOptions().copyWith(small: 56, large: 70))
       );
     }
   }

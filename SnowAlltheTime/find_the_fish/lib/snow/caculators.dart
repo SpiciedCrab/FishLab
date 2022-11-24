@@ -28,9 +28,9 @@ class SnowInfoUtils {
 
 class SnowBasicInfo {
   late double x, y, r;
-  late double vx, vy, vr;
+  late double vx, vy, vr; // 速度
 
-  late double ax, ay;
+  late double ax, ay; // 加速度
   late double ar;
 
   late Offset meltedStart;

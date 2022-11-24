@@ -16,12 +16,24 @@ class _TestWidgetState extends State<TestWidget> {
       body: Builder(
           builder: (ctx) => Container(
             child: Stack(children: [
-              Container(
-                width: double.infinity,
-                height: double.infinity,
-                color: Colors.cyan,
+              Scrollbar(
+                child: Container(
+                  color: Colors.cyan,
+                  width: double.infinity,
+                  child: SingleChildScrollView(
+                      physics: BouncingScrollPhysics(),
+                      padding: EdgeInsets.all(10),
+                      child: Column(
+                          children:
+                          '测试可滚动背景的情况下，是否能拖拽this widget'.split("").map((e) => Text(e, textScaleFactor: 2)).toList(),
+                      ),
+                  ),
+                ),
               ),
-              DecorationWidget(url: url,)
+              IgnorePointer(
+                child: DecorationWidget(url: url,),
+              ),
+              
             ],),
           )
       )

@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:ui' as ui;
+import 'package:find_the_fish/utils/calculateRandom.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -65,17 +66,14 @@ class _DecorationBgState extends State<DecorationBgWidget> with TickerProviderSt
       bean.image = await _rotatedImage(image: _netImageFrame, angle: _random.nextDouble() * 2 * pi / 10.0);
       //获取随机透明度白色
       bean.color = getRandomWhiteColor(_random);
-      double startX = randomNumberInRange(-(options.wind!).abs(), containerWidth + (options.wind!).abs());
+      double size = randomNumberInRange(options.small, options.large);
+      double startX = randomNumberInRange(0, containerWidth - size);
       double endY = _random.nextDouble() * MediaQuery.of(context).size.height;
       double endX = startX + randomNumberInRange(options.wind! - options.windVariance!, options.wind! + options.windVariance!);
-      double size = randomNumberInRange(options.small, options.large);
-      double speed = options.speed! / ((randomNumberInRange(size * 1.2, size * 0.8) - options.small!) / (options.large! - options.small!) + 0.5);
       bean.width = size;
-      bean.speed = speed;
+      bean.speed = randomNumberInRange(1,4);
       bean.position = Offset(endX.toDouble(), endY);
       bean.origin = Offset(startX.toDouble(), 0);
-      //设置半径
-      bean.width = size;
 
       _list.add(bean);
     }
@@ -120,10 +118,6 @@ class _DecorationBgState extends State<DecorationBgWidget> with TickerProviderSt
     return pictureRecorder.endRecording().toImage(image.width, image.height);
   }
 
-  double randomNumberInRange(min, max) {
-    return (Random().nextDouble() * (max - min + 1) + min).ceil().toDouble();
-  }
-
   @override
   void dispose() {
     _animationController.dispose();
@@ -133,9 +127,3 @@ class _DecorationBgState extends State<DecorationBgWidget> with TickerProviderSt
 
 }
 
-//全局定义获取颜色的方法
-Color getRandomWhiteColor(Random random) {
-  //透明度 0 ~ 200  255是不透明
-  int a = random.nextInt(200);
-  return Color.fromARGB(a, 255, 255, 255);
-}
