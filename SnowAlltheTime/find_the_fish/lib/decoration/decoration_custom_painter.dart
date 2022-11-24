@@ -24,7 +24,7 @@ class SnowCustomMyPainter extends CustomPainter {
       // double dx = random!.nextDouble() * 2.0 - 1.0;
       double dx = 0;
       //竖直方向位置偏移
-      double dy = element.speed ?? 0;
+      double dy = element.speed! / 1000;
       //位置偏移量计算
       element.position = element.position! + Offset(dx, dy);
 

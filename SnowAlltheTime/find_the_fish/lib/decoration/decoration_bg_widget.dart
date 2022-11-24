@@ -7,9 +7,14 @@ import 'package:find_the_fish/decoration/decoration_custom_painter.dart';
 import 'package:find_the_fish/utils/load_image.dart';
 import 'package:find_the_fish/decoration/decoration_model.dart';
 
+int containerWidth = 375;
+
 class DecorationBgWidget extends StatefulWidget {
   final String? imageUrl;
-  DecorationBgWidget({this.imageUrl});
+  final DecorationOptions? options;
+
+  DecorationBgWidget({this.imageUrl, this.options});
+
   @override
   _DecorationBgState createState() => _DecorationBgState();
 }
@@ -54,21 +59,23 @@ class _DecorationBgState extends State<DecorationBgWidget> with TickerProviderSt
   }
 
   void initData() async {
-    for (int i = 0; i < 8; i++) {
+    DecorationOptions options = widget.options ?? DecorationOptions.defaultValue();
+    for (int i = 0; i < 10; i++) {
       DecorationBean bean = new DecorationBean();
       bean.image = await _rotatedImage(image: _netImageFrame, angle: _random.nextDouble() * 2 * pi / 10.0);
-      bean.width = _random.nextInt(10) + 55;
       //获取随机透明度白色
       bean.color = getRandomWhiteColor(_random);
-      //设置位置 先来个默认的 绘制的时候再修改
-      double x = _random.nextDouble() * MediaQuery.of(context).size.width;
-      double y = _random.nextDouble() * MediaQuery.of(context).size.height;
-      double z = _random.nextDouble() + 0.5;
-      bean.speed = _random.nextDouble() * 2 + 0.03 / z;
-      bean.position = Offset(x, y);
-      bean.origin = Offset(x, 0);
+      double startX = randomNumberInRange(-(options.wind!).abs(), containerWidth + (options.wind!).abs());
+      double endY = _random.nextDouble() * MediaQuery.of(context).size.height;
+      double endX = startX + randomNumberInRange(options.wind! - options.windVariance!, options.wind! + options.windVariance!);
+      double size = randomNumberInRange(options.small, options.large);
+      double speed = options.speed! / ((randomNumberInRange(size * 1.2, size * 0.8) - options.small!) / (options.large! - options.small!) + 0.5);
+      bean.width = size;
+      bean.speed = speed;
+      bean.position = Offset(endX.toDouble(), endY);
+      bean.origin = Offset(startX.toDouble(), 0);
       //设置半径
-      bean.radius = 2.0 / z;
+      bean.width = size;
 
       _list.add(bean);
     }
@@ -112,6 +119,11 @@ class _DecorationBgState extends State<DecorationBgWidget> with TickerProviderSt
     canvas.drawImage(image, Offset.zero, Paint());
     return pictureRecorder.endRecording().toImage(image.width, image.height);
   }
+
+  double randomNumberInRange(min, max) {
+    return (Random().nextDouble() * (max - min + 1) + min).ceil().toDouble();
+  }
+
   @override
   void dispose() {
     _animationController.dispose();
@@ -120,7 +132,6 @@ class _DecorationBgState extends State<DecorationBgWidget> with TickerProviderSt
   }
 
 }
-
 
 //全局定义获取颜色的方法
 Color getRandomWhiteColor(Random random) {

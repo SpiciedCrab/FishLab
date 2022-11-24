@@ -1,9 +1,9 @@
+import 'package:example/testWidget.dart';
 import 'package:find_the_fish/snow/snow_bg.dart';
 import 'package:find_the_fish/thunder/thunder_bg.dart';
 import 'package:flutter/material.dart';
 
 import 'package:find_the_fish/decoration_old/decoration_bg.dart';
-import 'package:find_the_fish/decoration/decoration_bg_widget.dart';
 
 String url = "https://res-qa.app.ikea.cn/content/u/20221118/af49ccc4856341f98be02370c748d52a.png";
 
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           builder: (ctx) => Container(
             child: Column(
               children: [
-                ElevatedButton(onPressed: () => Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) => DecorationBgWidget(imageUrl: url,))),
+                ElevatedButton(onPressed: () => Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) => TestWidget())),
                   child: Text('new掉氛围啦')),
                   SizedBox(height: 10,),
                 ElevatedButton(onPressed: () => Navigator.of(ctx).push(MaterialPageRoute(builder: (ctx) => DecorationBg(imageUrl: url,))),
@@ -43,6 +43,14 @@ class MyApp extends StatelessWidget {
                     child: Text('闪电啦')),
               ],
             ),
+            // child: Stack(children: [
+            //   Container(
+            //     width: double.infinity,
+            //     height: double.infinity,
+            //     color: Colors.cyan,
+            //   ),
+            //   TestPageWidget(url: url,)
+            // ],),
           )
         ),
       ),

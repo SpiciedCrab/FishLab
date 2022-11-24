@@ -19,3 +19,71 @@ class DecorationBean {
 
   double? width;
 }
+class DecorationOptions {
+  num? frequency;
+  num? speed;
+  num? small;
+  num? large;
+  num? wind;
+  num? windVariance;
+  num? rotation;
+  num? rotationVariance;
+  double? startOpacity;
+  double? endOpacity;
+  double? height;
+
+  DecorationOptions({
+    this.frequency: 100,
+    this.speed: 3000,
+    this.small: 8,
+    this.large: 28,
+    this.wind: 40,
+    this.windVariance: 20,
+    this.rotation: 90,
+    this.rotationVariance: 180,
+    this.startOpacity: 1,
+    this.endOpacity: 0,
+    this.height: 200
+  });
+
+  DecorationOptions copyWith({
+    num? frequency,
+    num? speed,
+    num? small,
+    num? large,
+    num? wind,
+    num? windVariance,
+    num? rotation,
+    num? rotationVariance,
+    double? startOpacity,
+    double? endOpacity,
+    double? height
+  }) => DecorationOptions(
+    frequency: frequency ?? this.frequency,
+    speed: speed ?? this.speed,
+    small: small ?? this.small,
+    large: large ?? this.large,
+    wind: wind ?? this.wind,
+    windVariance: windVariance ?? this.windVariance,
+    rotation: rotation ?? this.rotation,
+    rotationVariance: rotationVariance ?? this.rotationVariance,
+    startOpacity: startOpacity ?? this.startOpacity,
+    endOpacity: endOpacity ?? this.endOpacity,
+    height: height ?? this.height,
+  );
+
+  DecorationOptions.defaultValue() {
+    frequency = 100;
+    speed = 3000;
+    small = 28;
+    large = 68;
+    wind = 40;
+    windVariance = 20;
+    rotation = 90;
+    rotationVariance = 180;
+    startOpacity = 1;
+    endOpacity = 0;
+    height = 200;
+  }
+}
+
