@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:find_the_fish/decoration/decoration_model.dart';
 
 // 重力加速度
-double g = SnowInfoUtils.ga / SnowInfoUtils.secondMultiply * 100;
+double g = SnowInfoUtils.ga / SnowInfoUtils.secondMultiply * 5;
 ///创建画布
 class SnowCustomMyPainter extends CustomPainter {
   List<DecorationBean>? list;
@@ -26,7 +26,7 @@ class SnowCustomMyPainter extends CustomPainter {
     list!.forEach((element) {
       //左右微抖动
       // double dx = random!.nextDouble() * 2.0 - 1.0;
-      double dx = 0;
+      double dx =sin(element.speed!.toInt());
       //竖直方向位置偏移
       double dy = element.speed!  + g;
       element.speed = element.speed! + g;
@@ -36,7 +36,7 @@ class SnowCustomMyPainter extends CustomPainter {
       //重置位置
       if (element.position!.dy > size.height) {
         element.position = element.origin;
-        element.speed = randomNumberInRange(0, 4);
+        element.speed = randomNumberInRange(0, 3);
       }
       
     });
